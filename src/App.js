@@ -10,6 +10,8 @@ class App extends Component {
   constructor(props){
     super(props); // 먼저 실행시킬 코드를 해당 construct 내에 작성한다
     this.state = {
+      mode: 'read',
+      welcome:{title:'welcome',desc:'Hello, React'},
       subject:{title:'WEB',sub:'World Wide Web!'},
       contents:[
         {id:1, title:'HTML', desc:'HTML is for information'},
@@ -20,21 +22,42 @@ class App extends Component {
   }
 
   render() {
+    var _title, _desc = null;
+    if(this.state.mode === 'welcome'){
+      _title = this.state.welcome.title;
+      _desc = this.state.welcome.desc;
+    } else if(this.state.mode === 'read'){
+      _title = this.state.contents[0].title;
+      _desc = this.state.contents[0].desc;
+    }
+    // console.log("App render")
     return (
       <div className="App">
-        <Subject 
+        {/* <Subject 
           title={this.state.subject.title} 
           sub={this.state.subject.sub}>
-        </Subject> 
+        </Subject>   */}
+        <header>
+            <h1><a href="/" onClick={function (e) {
+              // console.log(e);
+              // debugger;
+              e.preventDefault();
+              // this.state.mode = 'welcome'
+              this.setState({
+                mode:'welcome'
+              });
+            }.bind(this)}>
+            {this.state.subject.title}</a></h1>
+            {this.state.subject.sub}
+        </header>
         <TOC data={this.state.contents}></TOC>
-        <Content title="HTML" desc="HTML is HyperText Markup Language."></Content>
+        <Content 
+        title={_title} desc={_desc}
+        ></Content>
       </div>
     );
   }
 }
-
-
-
 
 
 export default App;
